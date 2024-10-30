@@ -2,10 +2,10 @@ import torch
 from torch import nn
 from torch.distributions import Normal
 from torch.distributions import kl_divergence as kl
-from scvi.module.base import BaseModuleClass, LossRecorder, auto_move_data
-from scvi import _CONSTANTS
+from scvi.module.base import BaseModuleClass, LossOutput, auto_move_data
+from scvi import REGISTRY_KEYS
 import numpy as np
-from modules import *
+from vidr.modules import *
 from collections import Counter
 
 # at beginning of the script
@@ -92,7 +92,7 @@ class VIDRModel(BaseModuleClass):
         self.decoder = self.lin_decoder if linear_decoder else self.nonlin_decoder
     
     def _get_inference_input(self, tensors):
-        x = tensors[_CONSTANTS.X_KEY]
+        x = tensors[REGISTRY_KEYS.X_KEY]
         input_dict = dict(
             x=x,
         )
@@ -129,7 +129,7 @@ class VIDRModel(BaseModuleClass):
         inference_outputs,
         generative_outputs,
     ):
-        x = tensors[_CONSTANTS.X_KEY]
+        x = tensors[REGISTRY_KEYS.X_KEY]
         mean = inference_outputs["qz_m"]
         var = inference_outputs["qz_v"]
         x_hat = generative_outputs["px"]
@@ -158,7 +158,7 @@ class VIDRModel(BaseModuleClass):
             ncal = torch.tensor(0, device = device)
 
         loss = (0.5 * rl + 0.5 * (kld * self.kl_weight)).mean() - 10 * ncal
-        return LossRecorder(loss, rl, kld, kl_global=0.0)
+        return LossOutput(loss, rl, kld)
 
     @torch.no_grad()
     def sample(

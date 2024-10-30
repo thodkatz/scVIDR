@@ -12,8 +12,8 @@ from scipy import sparse, stats
 from scvi.model.base import BaseModelClass, UnsupervisedTrainingMixin, VAEMixin
 
 #Create Access to my code
-from utils import *
-from vidr_model import VIDRModel
+from vidr.utils import *
+from vidr.vidr_model import VIDRModel
 
 class VIDR(VAEMixin, UnsupervisedTrainingMixin, BaseModelClass):
     """

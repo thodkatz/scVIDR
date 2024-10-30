@@ -6,7 +6,7 @@ from torch.nn import functional as F
 
 #Import single cell modules
 import scanpy as sc
-from scvi.data import setup_anndata
+from scvi.model import SCVI
 from scvi.dataloaders import AnnDataLoader
 
 #Other important modules
@@ -47,7 +47,7 @@ def prepare_data(
         (adata.obs[treatment_key] == treatment_to_predict))]
     test_adata = adata[((adata.obs[cell_type_key] == cell_type_to_predict) & 
         (adata.obs[treatment_key] == treatment_to_predict))]
-    train_adata = setup_anndata(train_adata, copy = True, batch_key = treatment_key, labels_key=cell_type_key)
+    train_adata = SCVI.setup_anndata(train_adata, copy = True, batch_key = treatment_key, labels_key=cell_type_key)
     return train_adata, test_adata
 
 

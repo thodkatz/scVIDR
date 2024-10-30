@@ -1,8 +1,6 @@
 #Import PCA Model
 from sklearn.decomposition import PCA
 
-from typing import Optional, Sequence
-
 import numpy
 import numpy as np
 import pandas as pd
@@ -13,7 +11,7 @@ from matplotlib import pyplot
 from scipy import sparse, stats
 
 #Create Access to my code
-from utils import *
+from vidr.utils import *
 
 class PCAEval():
     """
