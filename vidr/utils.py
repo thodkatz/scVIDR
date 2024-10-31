@@ -16,7 +16,7 @@ from collections import Counter
 from sklearn.linear_model import LinearRegression
 from scipy import sparse
 from scipy import stats
-
+from vidr import vidr
 
 def create_cell_dose_column(adata, celltype_column, dose_column):
     return adata.obs.apply(lambda x: f'{x[celltype_column]}_{x[dose_column]}', axis=1)
@@ -47,8 +47,9 @@ def prepare_data(
         (adata.obs[treatment_key] == treatment_to_predict))]
     test_adata = adata[((adata.obs[cell_type_key] == cell_type_to_predict) & 
         (adata.obs[treatment_key] == treatment_to_predict))]
-    train_adata = SCVI.setup_anndata(train_adata, copy = True, batch_key = treatment_key, labels_key=cell_type_key)
-    return train_adata, test_adata
+    train_copy = train_adata.copy() ## attempt to replace copy = True of old setup_anndata (scvi-tools 0.18)
+    vidr.VIDR.setup_anndata(train_copy, batch_key = treatment_key, labels_key=cell_type_key)
+    return train_copy, test_adata
 
 
 def prepare_cont_data(

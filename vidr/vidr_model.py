@@ -158,7 +158,7 @@ class VIDRModel(BaseModuleClass):
             ncal = torch.tensor(0, device = device)
 
         loss = (0.5 * rl + 0.5 * (kld * self.kl_weight)).mean() - 10 * ncal
-        return LossOutput(loss, rl, kld)
+        return LossOutput(loss=loss, reconstruction_loss=rl, kl_local=kld)
 
     @torch.no_grad()
     def sample(
