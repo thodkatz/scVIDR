@@ -165,7 +165,7 @@ class VIDR(VAEMixin, UnsupervisedTrainingMixin, BaseModelClass):
             latent_cd = self.get_latent_representation(ctrl_data)
 
         if sparse.issparse(new_adata.X):
-            new_adata.X = new_adata.X.A
+            new_adata.X = new_adata.X.toarray()
 
         # Are we regressing the delta on the latent space or not
         if not regression:

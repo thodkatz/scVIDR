@@ -73,8 +73,9 @@ def prepare_cont_data(
         (adata.obs[dose_key] > control_dose))]
     test_adata = adata[((adata.obs[cell_type_key] == cell_type_to_predict) & 
         (adata.obs[dose_key] > control_dose))]
-    train_adata = setup_anndata(train_adata, copy = True, batch_key = treatment_key, labels_key=cell_type_key)
-    return train_adata, test_adata
+    train_copy = train_adata.copy()
+    vidr.VIDR.setup_anndata(train_copy, batch_key = treatment_key, labels_key=cell_type_key)
+    return train_copy, test_adata
 
 def calculate_r2_singledose(
     adata,
