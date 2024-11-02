@@ -221,7 +221,7 @@ class VIDR(VAEMixin, UnsupervisedTrainingMixin, BaseModelClass):
                 obsm=ctrl_data.obsm.copy(),
             )
             if not regression:
-                return predicted_adata, delta
+                return predicted_adata, delta, None
             else:
                 return predicted_adata, delta, reg
         else:
@@ -276,7 +276,7 @@ class VIDR(VAEMixin, UnsupervisedTrainingMixin, BaseModelClass):
                     if d < max(doses)
                 }
             if not regression:
-                return predicted_adata_dict, delta
+                return predicted_adata_dict, delta, None
             else:
                 return predicted_adata_dict, delta, reg
 
