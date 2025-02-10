@@ -229,7 +229,6 @@ class VIDR(VAEMixin, UnsupervisedTrainingMixin, BaseModelClass):
                 treat_pred_dict = {
                     d: delta * (np.log1p(d) / np.log1p(max(doses))) + latent_cd
                     for d in doses
-                    if d > min(doses)
                 }
                 predicted_cells_dict = {
                     d: self.module.generative(torch.Tensor(treat_pred_dict[d]))["px"]
@@ -237,7 +236,6 @@ class VIDR(VAEMixin, UnsupervisedTrainingMixin, BaseModelClass):
                     .detach()
                     .numpy()
                     for d in doses
-                    if d > min(doses)
                 }
                 predicted_adata_dict = {
                     d: sc.AnnData(
@@ -247,7 +245,6 @@ class VIDR(VAEMixin, UnsupervisedTrainingMixin, BaseModelClass):
                         obsm=ctrl_data.obsm.copy(),
                     )
                     for d in doses
-                    if d > min(doses)
                 }
             else:
                 treat_pred_dict = {
