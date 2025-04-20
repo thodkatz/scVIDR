@@ -9,6 +9,7 @@ from adjustText import adjust_text
 from anndata import AnnData
 from matplotlib import pyplot
 from scipy import sparse, stats
+import anndata as ad
 
 from scvi.model.base import BaseModelClass, UnsupervisedTrainingMixin, VAEMixin
 from scvi import REGISTRY_KEYS
@@ -141,7 +142,8 @@ class VIDR(VAEMixin, UnsupervisedTrainingMixin, BaseModelClass):
         treat_x = random_sample(treat_x, cell_type_key)
 
         # Balancing across treatments
-        new_adata = ctrl_x.concatenate(treat_x)
+        #new_adata = ctrl_x.concatenate(treat_x)
+        new_adata = ad.concat([ctrl_x, treat_x])
         new_adata = random_sample(
             new_adata, treatment_key, max_or_min="min", replacement=False
         )
